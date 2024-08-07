@@ -3,16 +3,14 @@
 import React from "react";
 
 function MainComponent() {
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [errors, setErrors] = React.useState({});
 
   const validateForm = () => {
-    let newErrors = {};
-    if (!name) newErrors.name = "お名前を入力してください";
+    const newErrors = {};
     if (!email) newErrors.email = "メールアドレスを入力してください";
-    else if (!isValidEmail(email))
+    else if (!/\S+@\S+\.\S+/.test(email))
       newErrors.email =
         "メールアドレスは「ユーザー名@ドメイン」形式で入力してください";
     if (!password) newErrors.password = "パスワードを入力してください";
@@ -20,102 +18,104 @@ function MainComponent() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (validateForm()) {
-      console.log("Form submitted successfully");
-      // Here you would typically make an API call to register the user
-      // For now, we'll just simulate a redirect to the login page
-      alert("登録が完了しました。ログインページへ遷移します。");
+      try {
+        const response = await fetch("/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (response.ok) {
+          window.location.href = "/admin";
+        } else {
+          const data = await response.json();
+          setErrors(data.errors || { general: "ログインに失敗しました" });
+        }
+      } catch (error) {
+        setErrors({ general: "ネットワークエラーが発生しました" });
+      }
     }
   };
 
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  const handleRegisterClick = () => {
+    window.location.href = "/register";
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#f2f2f2] font-arial">
-      <header className="bg-white p-4 shadow-md">
-        <nav className="container mx-auto flex justify-end">
-          <button className="bg-[#b19f85] hover:bg-[#a08e75] text-white font-bold py-2 px-4 rounded">
-            login
-          </button>
-        </nav>
-      </header>
-      <div className="flex-grow flex justify-center items-center">
-        <div className="bg-[#f8f5f2] p-8 rounded-lg shadow-md max-w-[400px] w-full">
-          <h2 className="text-3xl font-normal mb-6 text-center text-[#b19f85]">
+    <div className="min-h-screen bg-[#f9f5f1] flex flex-col items-center justify-center font-arial">
+      <div className="w-full max-w-3xl">
+        <div className="bg-white mb-8 p-4 flex justify-between items-center">
+          <div className="flex-grow"></div>
+          <h1 className="text-[2em] font-crimson-text text-[#5d4037] text-center">
             FashionablyLate
-          </h2>
-          <h3 className="text-2xl font-normal mb-6 text-center text-[#b19f85]">
-            Register
-          </h3>
-          <form
-            id="registration-form"
-            onSubmit={handleSubmit}
-            className="bg-white p-6 rounded-lg"
-          >
+          </h1>
+          <div className="flex-grow flex justify-end">
+            <button
+              onClick={handleRegisterClick}
+              className="px-4 py-2 bg-[#f0e8e0] text-[#5d4037] rounded hover:bg-[#e0d8d0] transition-colors duration-300 font-crimson-text"
+            >
+              register
+            </button>
+          </div>
+        </div>
+        <h2 className="text-[1.5em] font-crimson-text text-[#5d4037] text-center mb-6">
+          Login
+        </h2>
+        <div className="bg-white p-8 rounded-lg shadow-md">
+          <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label htmlFor="name" className="block mb-2 text-sm">
-                お名前
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f8f5f2]"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="例）山田 太郎"
-              />
-              {errors.name && (
-                <p className="text-red-500 text-xs mt-1">{errors.name}</p>
-              )}
-            </div>
-            <div className="mb-4">
-              <label htmlFor="email" className="block mb-2 text-sm">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-[#5d4037] mb-1"
+              >
                 メールアドレス
               </label>
               <input
                 type="email"
                 id="email"
                 name="email"
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f8f5f2]"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="例）info@example.com"
+                className="w-full px-3 py-2 border border-[#d3d3d3] rounded-md focus:outline-none focus:ring-1 focus:ring-[#5d4037]"
+                placeholder="例: test@example.com"
               />
               {errors.email && (
                 <p className="text-red-500 text-xs mt-1">{errors.email}</p>
               )}
             </div>
             <div className="mb-6">
-              <label htmlFor="password" className="block mb-2 text-sm">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-[#5d4037] mb-1"
+              >
                 パスワード
               </label>
               <input
                 type="password"
                 id="password"
                 name="password"
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f8f5f2]"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="例）abcd1234"
+                className="w-full px-3 py-2 border border-[#d3d3d3] rounded-md focus:outline-none focus:ring-1 focus:ring-[#5d4037]"
+                placeholder="例: coachurchin65"
               />
               {errors.password && (
                 <p className="text-red-500 text-xs mt-1">{errors.password}</p>
               )}
             </div>
+            {errors.general && (
+              <p className="text-red-500 text-sm mb-4">{errors.general}</p>
+            )}
             <button
               type="submit"
-              className="w-full bg-[#b19f85] hover:bg-[#a08e75] text-white font-bold py-2 px-4 rounded"
+              className="w-full bg-[#6d4a3d] text-white py-2 h-[40px] rounded-md hover:bg-[#56382d] transition-colors duration-300 font-crimson-text"
             >
-              登録
+              ログイン
             </button>
           </form>
         </div>
