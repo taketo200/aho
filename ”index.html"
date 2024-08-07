@@ -1,12 +1,126 @@
+"use client";
+import React from "react";
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Page</title>
-</head>
-<body>
-    <h1>Welcome to My Website</h1>
-</body>
-</html>
+function MainComponent() {
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = React.useState("");
+  const [errors, setErrors] = React.useState({});
+
+  const validateForm = () => {
+    let newErrors = {};
+    if (!name) newErrors.name = "お名前を入力してください";
+    if (!email) newErrors.email = "メールアドレスを入力してください";
+    else if (!isValidEmail(email))
+      newErrors.email =
+        "メールアドレスは「ユーザー名@ドメイン」形式で入力してください";
+    if (!password) newErrors.password = "パスワードを入力してください";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (validateForm()) {
+      console.log("Form submitted successfully");
+      // Here you would typically make an API call to register the user
+      // For now, we'll just simulate a redirect to the login page
+      alert("登録が完了しました。ログインページへ遷移します。");
+    }
+  };
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen bg-[#f2f2f2] font-arial">
+      <header className="bg-white p-4 shadow-md">
+        <nav className="container mx-auto flex justify-end">
+          <button className="bg-[#b19f85] hover:bg-[#a08e75] text-white font-bold py-2 px-4 rounded">
+            login
+          </button>
+        </nav>
+      </header>
+      <div className="flex-grow flex justify-center items-center">
+        <div className="bg-[#f8f5f2] p-8 rounded-lg shadow-md max-w-[400px] w-full">
+          <h2 className="text-3xl font-normal mb-6 text-center text-[#b19f85]">
+            FashionablyLate
+          </h2>
+          <h3 className="text-2xl font-normal mb-6 text-center text-[#b19f85]">
+            Register
+          </h3>
+          <form
+            id="registration-form"
+            onSubmit={handleSubmit}
+            className="bg-white p-6 rounded-lg"
+          >
+            <div className="mb-4">
+              <label htmlFor="name" className="block mb-2 text-sm">
+                お名前
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f8f5f2]"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="例）山田 太郎"
+              />
+              {errors.name && (
+                <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+              )}
+            </div>
+            <div className="mb-4">
+              <label htmlFor="email" className="block mb-2 text-sm">
+                メールアドレス
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f8f5f2]"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="例）info@example.com"
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+              )}
+            </div>
+            <div className="mb-6">
+              <label htmlFor="password" className="block mb-2 text-sm">
+                パスワード
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f8f5f2]"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="例）abcd1234"
+              />
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-[#b19f85] hover:bg-[#a08e75] text-white font-bold py-2 px-4 rounded"
+            >
+              登録
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default MainComponent;
