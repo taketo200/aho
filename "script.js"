@@ -3,6 +3,133 @@
 import React from "react";
 
 function MainComponent() {
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = React.useState("");
+  const [errors, setErrors] = React.useState({});
+
+  const validateForm = () => {
+    let newErrors = {};
+    if (!name) newErrors.name = "お名前を入力してください";
+    if (!email) newErrors.email = "メールアドレスを入力してください";
+    else if (!isValidEmail(email))
+      newErrors.email =
+        "メールアドレスは「ユーザー名@ドメイン」形式で入力してください";
+    if (!password) newErrors.password = "パスワードを入力してください";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (validateForm()) {
+      console.log("Form submitted successfully");
+      // Here you would typically make an API call to register the user
+      // For now, we'll just simulate a redirect to the login page
+      alert("登録が完了しました。ログインページへ遷移します。");
+    }
+  };
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen bg-[#f2f2f2] font-arial">
+      <header className="bg-white p-4 shadow-md">
+        <nav className="container mx-auto flex justify-end">
+          <button className="bg-[#b19f85] hover:bg-[#a08e75] text-white font-bold py-2 px-4 rounded">
+            login
+          </button>
+        </nav>
+      </header>
+      <div className="flex-grow flex justify-center items-center">
+        <div className="bg-[#f8f5f2] p-8 rounded-lg shadow-md max-w-[400px] w-full">
+          <h2 className="text-3xl font-normal mb-6 text-center text-[#b19f85]">
+            FashionablyLate
+          </h2>
+          <h3 className="text-2xl font-normal mb-6 text-center text-[#b19f85]">
+            Register
+          </h3>
+          <form
+            id="registration-form"
+            onSubmit={handleSubmit}
+            className="bg-white p-6 rounded-lg"
+          >
+            <div className="mb-4">
+              <label htmlFor="name" className="block mb-2 text-sm">
+                お名前
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f8f5f2]"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="例）山田 太郎"
+              />
+              {errors.name && (
+                <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+              )}
+            </div>
+            <div className="mb-4">
+              <label htmlFor="email" className="block mb-2 text-sm">
+                メールアドレス
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f8f5f2]"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="例）info@example.com"
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+              )}
+            </div>
+            <div className="mb-6">
+              <label htmlFor="password" className="block mb-2 text-sm">
+                パスワード
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f8f5f2]"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="例）abcd1234"
+              />
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-[#b19f85] hover:bg-[#a08e75] text-white font-bold py-2 px-4 rounded"
+            >
+              登録
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default MainComponent;
+
+"use client";
+import React from "react";
+
+function MainComponent() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [errors, setErrors] = React.useState({});
@@ -125,3 +252,912 @@ function MainComponent() {
 }
 
 export default MainComponent;
+
+"use client";
+import React from "react";
+
+function MainComponent() {
+  const [searchParams, setSearchParams] = React.useState({
+    search: "",
+    gender: "",
+    inquiryType: "",
+    date: "",
+  });
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [showModal, setShowModal] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState(null);
+  const [data, setData] = React.useState([
+    {
+      id: 1,
+      name: "山田 太郎",
+      gender: "男性",
+      email: "test@example.com",
+      inquiryType: "商品の交換について",
+      date: "2023-08-05",
+    },
+    {
+      id: 2,
+      name: "山田 太郎",
+      gender: "男性",
+      email: "test@example.com",
+      inquiryType: "商品の交換について",
+      date: "2023-08-05",
+    },
+    {
+      id: 3,
+      name: "山田 太郎",
+      gender: "男性",
+      email: "test@example.com",
+      inquiryType: "商品の交換について",
+      date: "2023-08-05",
+    },
+    {
+      id: 4,
+      name: "山田 太郎",
+      gender: "男性",
+      email: "test@example.com",
+      inquiryType: "商品の交換について",
+      date: "2023-08-05",
+    },
+    {
+      id: 5,
+      name: "山田 太郎",
+      gender: "男性",
+      email: "test@example.com",
+      inquiryType: "商品の交換について",
+      date: "2023-08-05",
+    },
+    {
+      id: 6,
+      name: "山田 太郎",
+      gender: "男性",
+      email: "test@example.com",
+      inquiryType: "商品の交換について",
+      date: "2023-08-05",
+    },
+    {
+      id: 7,
+      name: "山田 太郎",
+      gender: "男性",
+      email: "test@example.com",
+      inquiryType: "商品の交換について",
+      date: "2023-08-05",
+    },
+  ]);
+
+  const itemsPerPage = 7;
+
+  const handleInputChange = (e) => {
+    setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setCurrentPage(1);
+  };
+
+  const handleReset = () => {
+    setSearchParams({ search: "", gender: "", inquiryType: "", date: "" });
+    setCurrentPage(1);
+  };
+
+  const handleExport = () => {
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      "お名前,性別,メールアドレス,お問い合わせの種類,日付\n" +
+      filteredData
+        .map(
+          (item) =>
+            `${item.name},${item.gender},${item.email},${item.inquiryType},${item.date}`
+        )
+        .join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "export.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const openModal = (item) => {
+    setSelectedItem(item);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedItem(null);
+  };
+
+  const handleDelete = (id) => {
+    setData(data.filter((item) => item.id !== id));
+    closeModal();
+  };
+
+  const filteredData = data.filter((item) => {
+    return (
+      (searchParams.search === "" ||
+        item.name.toLowerCase().includes(searchParams.search.toLowerCase()) ||
+        item.email.toLowerCase().includes(searchParams.search.toLowerCase())) &&
+      (searchParams.gender === "" ||
+        searchParams.gender === "all" ||
+        item.gender === searchParams.gender) &&
+      (searchParams.inquiryType === "" ||
+        item.inquiryType === searchParams.inquiryType) &&
+      (searchParams.date === "" || item.date === searchParams.date)
+    );
+  });
+
+  const paginatedData = filteredData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  return (
+    <div className="container mx-auto px-4 py-8 font-crimson-text">
+      <header className="text-center mb-8">
+        <h1 className="text-4xl text-[#8D7B68] mb-2">FashionablyLate</h1>
+        <h2 className="text-3xl text-[#A4907C]">Admin</h2>
+      </header>
+
+      <div className="mb-6">
+        <form onSubmit={handleSearch} className="flex flex-wrap gap-4 mb-4">
+          <input
+            type="text"
+            placeholder="名前やメールアドレスを入力してください"
+            className="flex-grow p-2 border border-[#A4907C] rounded"
+            name="search"
+            value={searchParams.search}
+            onChange={handleInputChange}
+          />
+          <select
+            className="p-2 border border-[#A4907C] rounded"
+            name="gender"
+            value={searchParams.gender}
+            onChange={handleInputChange}
+          >
+            <option value="">性別</option>
+            <option value="all">全て</option>
+            <option value="男性">男性</option>
+            <option value="女性">女性</option>
+            <option value="その他">その他</option>
+          </select>
+          <select
+            className="p-2 border border-[#A4907C] rounded"
+            name="inquiryType"
+            value={searchParams.inquiryType}
+            onChange={handleInputChange}
+          >
+            <option value="">お問い合わせの種類</option>
+            <option value="商品の交換について">商品の交換について</option>
+          </select>
+          <input
+            type="date"
+            className="p-2 border border-[#A4907C] rounded"
+            name="date"
+            value={searchParams.date}
+            onChange={handleInputChange}
+          />
+          <button
+            type="submit"
+            className="bg-[#8D7B68] text-white px-4 py-2 rounded"
+          >
+            検索
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="bg-[#C8B6A6] text-white px-4 py-2 rounded"
+          >
+            リセット
+          </button>
+        </form>
+        <div className="flex flex-col md:flex-row justify-between items-center mb-4">
+          <button
+            onClick={handleExport}
+            className="bg-[#E5E5E5] text-[#A4907C] px-4 py-2 rounded mb-2 md:mb-0"
+          >
+            エクスポート
+          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+              className="px-2 py-1 border border-[#8D7B68] rounded-sm"
+            >
+              &lt;
+            </button>
+            {[1, 2, 3, 4, 5].map((page) => (
+              <button
+                key={page}
+                onClick={() => handlePageChange(page)}
+                className={`px-2 py-1 border border-[#8D7B68] ${
+                  page === currentPage
+                    ? "bg-[#8D7B68] text-white"
+                    : "bg-white text-[#8D7B68]"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              onClick={() => handlePageChange(Math.min(5, currentPage + 1))}
+              className="px-2 py-1 border border-[#8D7B68] rounded-sm"
+            >
+              &gt;
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <table className="w-full mb-6">
+        <thead>
+          <tr className="bg-[#8D7B68] text-white">
+            <th className="p-2 text-left">お名前</th>
+            <th className="p-2 text-left">性別</th>
+            <th className="p-2 text-left">メールアドレス</th>
+            <th className="p-2 text-left">お問い合わせの種類</th>
+            <th className="p-2 text-left"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {paginatedData.map((item) => (
+            <tr key={item.id} className="bg-white">
+              <td className="p-2 border border-white text-[#A4907C]">
+                {item.name}
+              </td>
+              <td className="p-2 border border-white text-[#A4907C]">
+                {item.gender}
+              </td>
+              <td className="p-2 border border-white text-[#A4907C]">
+                {item.email}
+              </td>
+              <td className="p-2 border border-white text-[#A4907C]">
+                {item.inquiryType}
+              </td>
+              <td className="p-2 border border-white">
+                <button
+                  onClick={() => openModal(item)}
+                  className="bg-white text-[#A4907C] px-2 py-1 rounded text-sm border border-[#A4907C]"
+                >
+                  詳細
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg w-[80%] max-w-2xl">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-2xl font-bold text-[#A4907C]">詳細情報</h3>
+              <button onClick={closeModal} className="text-2xl">
+                &times;
+              </button>
+            </div>
+            <div className="mb-4">
+              <p>
+                <strong className="text-[#A4907C]">お名前:</strong>{" "}
+                <span className="text-[#A4907C]">{selectedItem.name}</span>
+              </p>
+              <p>
+                <strong className="text-[#A4907C]">性別:</strong>{" "}
+                <span className="text-[#A4907C]">{selectedItem.gender}</span>
+              </p>
+              <p>
+                <strong className="text-[#A4907C]">メールアドレス:</strong>{" "}
+                <span className="text-[#A4907C]">{selectedItem.email}</span>
+              </p>
+              <p>
+                <strong className="text-[#A4907C]">お問い合わせの種類:</strong>{" "}
+                <span className="text-[#A4907C]">
+                  {selectedItem.inquiryType}
+                </span>
+              </p>
+              <p>
+                <strong className="text-[#A4907C]">日付:</strong>{" "}
+                <span className="text-[#A4907C]">{selectedItem.date}</span>
+              </p>
+            </div>
+            <button
+              onClick={() => handleDelete(selectedItem.id)}
+              className="bg-red-500 text-white px-4 py-2 rounded"
+            >
+              削除
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default MainComponent;
+
+
+"use client";
+import React from "react";
+
+function MainComponent() {
+  const [formData, setFormData] = React.useState({
+    lastName: "",
+    firstName: "",
+    gender: "male",
+    email: "",
+    phone1: "",
+    phone2: "",
+    phone3: "",
+    address: "",
+    building: "",
+    category: "",
+    content: "",
+  });
+
+  const [errors, setErrors] = React.useState({});
+  const [showModal, setShowModal] = React.useState(false);
+  const [contacts, setContacts] = React.useState([]);
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
+
+  React.useEffect(() => {
+    const dummyContacts = Array.from({ length: 35 })
+      .fill()
+      .map((_, index) => ({
+        id: index + 1,
+        lastName: "山田",
+        firstName: "太郎",
+        gender: "男性",
+        email: `test${index + 1}@example.com`,
+        category: "商品の交換について",
+      }));
+    setContacts(dummyContacts);
+  }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const validateForm = () => {
+    let newErrors = {};
+    if (!formData.lastName) newErrors.lastName = "姓を入力してください";
+    if (!formData.firstName) newErrors.firstName = "名を入力してください";
+    if (!formData.gender) newErrors.gender = "性別を選択してください";
+    if (!formData.email) newErrors.email = "メールアドレスを入力してください";
+    else if (!/\S+@\S+\.\S+/.test(formData.email))
+      newErrors.email = "メールアドレスはメール形式で入力してください";
+    if (!formData.phone1 || !formData.phone2 || !formData.phone3)
+      newErrors.phone = "電話番号を入力してください";
+    else if (
+      !/^\d{1,5}$/.test(formData.phone1 + formData.phone2 + formData.phone3)
+    )
+      newErrors.phone = "電話番号は5桁までの数字で入力してください";
+    if (!formData.address) newErrors.address = "住所を入力してください";
+    if (!formData.category)
+      newErrors.category = "お問い合わせの種類を選択してください";
+    if (!formData.content)
+      newErrors.content = "お問い合わせ内容を入力してください";
+    else if (formData.content.length > 120)
+      newErrors.content = "お問合せ内容は120文字以内で入力してください";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      setShowModal(true);
+    }
+  };
+
+  const filteredContacts = contacts.filter(
+    (contact) =>
+      contact.lastName.includes(searchTerm) ||
+      contact.firstName.includes(searchTerm) ||
+      contact.email.includes(searchTerm) ||
+      contact.category.includes(searchTerm)
+  );
+
+  return (
+    <div className="bg-[#f5f5f5] min-h-screen flex flex-col items-center py-10 px-4 font-arial text-gray-700">
+      <div className="w-full max-w-4xl bg-white rounded-lg shadow-md p-8">
+        <h1 className="text-3xl font-crimson-text text-[#8B7765] text-center mb-6">
+          FashionablyLate
+        </h1>
+        <h2 className="text-2xl font-crimson-text text-[#8B7765] text-center mb-8">
+          Contact
+        </h2>
+
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div className="flex space-x-4">
+            <div className="flex-1">
+              <label className="block text-[#8B7765] mb-2">
+                お名前 <span className="text-red-500">※</span>
+              </label>
+              <input
+                type="text"
+                name="lastName"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f5f5f5]"
+                placeholder="姓"
+                onChange={handleInputChange}
+                value={formData.lastName}
+              />
+              {errors.lastName && (
+                <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
+              )}
+            </div>
+            <div className="flex-1">
+              <label className="block text-[#8B7765] mb-2">&nbsp;</label>
+              <input
+                type="text"
+                name="firstName"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f5f5f5]"
+                placeholder="名"
+                onChange={handleInputChange}
+                value={formData.firstName}
+              />
+              {errors.firstName && (
+                <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[#8B7765] mb-2">
+              性別 <span className="text-red-500">※</span>
+            </label>
+            <div className="flex space-x-5">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="male"
+                  className="mr-2"
+                  onChange={handleInputChange}
+                  checked={formData.gender === "male"}
+                />
+                <span className="text-[#8B7765]">男性</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  className="mr-2"
+                  onChange={handleInputChange}
+                  checked={formData.gender === "female"}
+                />
+                <span className="text-[#8B7765]">女性</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="other"
+                  className="mr-2"
+                  onChange={handleInputChange}
+                  checked={formData.gender === "other"}
+                />
+                <span className="text-[#8B7765]">その他</span>
+              </label>
+            </div>
+            {errors.gender && (
+              <p className="text-red-500 text-sm mt-1">{errors.gender}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-[#8B7765] mb-2">
+              メールアドレス <span className="text-red-500">※</span>
+            </label>
+            <input
+              type="email"
+              name="email"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f5f5f5]"
+              placeholder="例：test@example.com"
+              onChange={handleInputChange}
+              value={formData.email}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-[#8B7765] mb-2">
+              電話番号 <span className="text-red-500">※</span>
+            </label>
+            <div className="flex space-x-2">
+              <input
+                type="tel"
+                name="phone1"
+                className="w-1/3 px-3 py-2 border border-gray-300 rounded-md bg-[#f5f5f5]"
+                placeholder="080"
+                maxLength="3"
+                onChange={handleInputChange}
+                value={formData.phone1}
+              />
+              <input
+                type="tel"
+                name="phone2"
+                className="w-1/3 px-3 py-2 border border-gray-300 rounded-md bg-[#f5f5f5]"
+                placeholder="1234"
+                maxLength="4"
+                onChange={handleInputChange}
+                value={formData.phone2}
+              />
+              <input
+                type="tel"
+                name="phone3"
+                className="w-1/3 px-3 py-2 border border-gray-300 rounded-md bg-[#f5f5f5]"
+                placeholder="5678"
+                maxLength="4"
+                onChange={handleInputChange}
+                value={formData.phone3}
+              />
+            </div>
+            {errors.phone && (
+              <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-[#8B7765] mb-2">
+              住所 <span className="text-red-500">※</span>
+            </label>
+            <input
+              type="text"
+              name="address"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f5f5f5]"
+              placeholder="例：東京都渋谷区千駄ヶ谷1-2-3"
+              onChange={handleInputChange}
+              value={formData.address}
+            />
+            {errors.address && (
+              <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-[#8B7765] mb-2">建物名</label>
+            <input
+              type="text"
+              name="building"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f5f5f5]"
+              placeholder="例：千駄ヶ谷マンション101"
+              onChange={handleInputChange}
+              value={formData.building}
+            />
+          </div>
+
+          <div>
+            <label className="block text-[#8B7765] mb-2">
+              お問い合わせの種類 <span className="text-red-500">※</span>
+            </label>
+            <select
+              name="category"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f5f5f5]"
+              onChange={handleInputChange}
+              value={formData.category}
+            >
+              <option value="">選択してください</option>
+              <option value="1">商品のお届けについて</option>
+              <option value="2">商品の交換について</option>
+              <option value="3">商品トラブル</option>
+              <option value="4">ショップへのお問い合わせ</option>
+              <option value="5">その他</option>
+            </select>
+            {errors.category && (
+              <p className="text-red-500 text-sm mt-1">{errors.category}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-[#8B7765] mb-2">
+              お問い合わせ内容 <span className="text-red-500">※</span>
+            </label>
+            <textarea
+              name="content"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f5f5f5]"
+              rows="4"
+              maxLength="120"
+              placeholder="お問い合わせ内容をご記入ください"
+              onChange={handleInputChange}
+              value={formData.content}
+            ></textarea>
+            {errors.content && (
+              <p className="text-red-500 text-sm mt-1">{errors.content}</p>
+            )}
+          </div>
+
+          <div className="text-center">
+            <button
+              type="submit"
+              className="bg-[#8c7c6b] text-white px-6 py-2 rounded-md hover:bg-[#7a6a5c] transition duration-300"
+            >
+              確認画面
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-8 rounded-lg max-w-2xl w-full">
+            <h2 className="text-2xl font-crimson-text text-[#8B7765] text-center mb-4">
+              確認画面
+            </h2>
+            <div className="space-y-4">
+              <p>
+                <strong>お名前:</strong> {formData.lastName}{" "}
+                {formData.firstName}
+              </p>
+              <p>
+                <strong>性別:</strong>{" "}
+                {formData.gender === "male"
+                  ? "男性"
+                  : formData.gender === "female"
+                  ? "女性"
+                  : "その他"}
+              </p>
+              <p>
+                <strong>メールアドレス:</strong> {formData.email}
+              </p>
+              <p>
+                <strong>電話番号:</strong> {formData.phone1}-{formData.phone2}-
+                {formData.phone3}
+              </p>
+              <p>
+                <strong>住所:</strong> {formData.address}
+              </p>
+              <p>
+                <strong>建物名:</strong> {formData.building}
+              </p>
+              <p>
+                <strong>お問い合わせの種類:</strong> {formData.category}
+              </p>
+              <p>
+                <strong>お問い合わせ内容:</strong> {formData.content}
+              </p>
+            </div>
+            <div className="mt-6 flex justify-center space-x-4">
+              <button
+                onClick={() => setShowModal(false)}
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
+              >
+                戻る
+              </button>
+              <button className="bg-[#8c7c6b] text-white px-4 py-2 rounded-md">
+                送信
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default MainComponent;
+
+
+"use client";
+import React from "react";
+
+function MainComponent() {
+  const [formData, setFormData] = React.useState({
+    lastName: "山田",
+    firstName: "太郎",
+    gender: "男性",
+    email: "test@example.com",
+    phone: "08012345678",
+    address: "東京都渋谷区千駄ヶ谷1-2-3",
+    building: "千駄ヶ谷マンション101",
+    inquiryType: "商品の交換について",
+    inquiryContent:
+      "届いた商品が注文した商品ではありませんでした。商品の取り替えをお願いします。",
+  });
+
+  const handleEdit = () => {
+    console.log("Navigating to inquiry form with:", formData);
+  };
+
+  const handleSubmit = () => {
+    console.log("Saving data and navigating to thanks page:", formData);
+  };
+
+  const getGenderDisplay = (gender) => {
+    switch (gender) {
+      case "男性":
+        return "男性";
+      case "女性":
+        return "女性";
+      default:
+        return "その他";
+    }
+  };
+
+  return (
+    <div className="bg-[#f8f8f8] min-h-screen flex items-center justify-center font-sans text-[#5d4037]">
+      <div className="bg-white w-full max-w-3xl p-8 rounded-lg shadow-md">
+        <h1 className="text-3xl text-center mb-2">FashionablyLate</h1>
+        <h2 className="text-2xl text-center mb-6">Confirm</h2>
+
+        <table className="w-full border-collapse mb-6">
+          <tbody>
+            <tr>
+              <th className="bg-[#e9e1dd] text-left p-3 border border-[#ddd] w-1/3 text-white">
+                お名前
+              </th>
+              <td className="p-3 border border-[#ddd]">{`${formData.lastName} ${formData.firstName}`}</td>
+            </tr>
+            <tr>
+              <th className="bg-[#e9e1dd] text-left p-3 border border-[#ddd] text-white">
+                性別
+              </th>
+              <td className="p-3 border border-[#ddd]">
+                {getGenderDisplay(formData.gender)}
+              </td>
+            </tr>
+            <tr>
+              <th className="bg-[#e9e1dd] text-left p-3 border border-[#ddd] text-white">
+                メールアドレス
+              </th>
+              <td className="p-3 border border-[#ddd]">{formData.email}</td>
+            </tr>
+            <tr>
+              <th className="bg-[#e9e1dd] text-left p-3 border border-[#ddd] text-white">
+                電話番号
+              </th>
+              <td className="p-3 border border-[#ddd]">{formData.phone}</td>
+            </tr>
+            <tr>
+              <th className="bg-[#e9e1dd] text-left p-3 border border-[#ddd] text-white">
+                住所
+              </th>
+              <td className="p-3 border border-[#ddd]">{formData.address}</td>
+            </tr>
+            <tr>
+              <th className="bg-[#e9e1dd] text-left p-3 border border-[#ddd] text-white">
+                建物名
+              </th>
+              <td className="p-3 border border-[#ddd]">{formData.building}</td>
+            </tr>
+            <tr>
+              <th className="bg-[#e9e1dd] text-left p-3 border border-[#ddd] text-white">
+                お問い合わせの種類
+              </th>
+              <td className="p-3 border border-[#ddd]">
+                {formData.inquiryType}
+              </td>
+            </tr>
+            <tr>
+              <th className="bg-[#e9e1dd] text-left p-3 border border-[#ddd] text-white">
+                お問い合わせ内容
+              </th>
+              <td className="p-3 border border-[#ddd]">
+                {formData.inquiryContent}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div className="flex justify-center space-x-4">
+          <button
+            onClick={handleSubmit}
+            className="bg-[#8d6e63] text-white px-6 py-2 rounded hover:bg-[#6d4a3d] transition duration-300"
+          >
+            送信
+          </button>
+          <button
+            onClick={handleEdit}
+            className="bg-white text-[#8d6e63] px-6 py-2 rounded border border-[#8d6e63] hover:bg-[#8d6e63] hover:text-white transition duration-300"
+          >
+            修正
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default MainComponent;
+
+"use client";
+import React from "react";
+
+function MainComponent() {
+  const [showContactForm, setShowContactForm] = React.useState(false);
+
+  const handleHomeClick = () => {
+    setShowContactForm(true);
+  };
+
+  if (showContactForm) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-white text-[#5d4037]">
+        <h1 className="text-3xl font-bold mb-8">お問い合わせフォーム</h1>
+        <form className="w-full max-w-lg">
+          <div className="mb-4">
+            <label className="block text-sm font-bold mb-2" htmlFor="name">
+              お名前
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+              id="name"
+              type="text"
+              name="name"
+              placeholder="お名前"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-bold mb-2" htmlFor="email">
+              メールアドレス
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+              id="email"
+              type="email"
+              name="email"
+              placeholder="メールアドレス"
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-sm font-bold mb-2" htmlFor="message">
+              メッセージ
+            </label>
+            <textarea
+              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+              id="message"
+              name="message"
+              placeholder="メッセージ"
+              rows="4"
+            ></textarea>
+          </div>
+          <div className="flex items-center justify-between">
+            <button
+              className="bg-[#8d6e63] hover:bg-[#6d4a3d] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="button"
+            >
+              送信
+            </button>
+          </div>
+        </form>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-white text-[#5d4037]">
+      <div className="absolute flex justify-center items-center w-full h-full z-0">
+        <div className="text-[10em] text-[rgba(240,240,240,0.7)]">
+          <span className="inline-block">Thank</span>
+          <span className="inline-block ml-4">you</span>
+        </div>
+      </div>
+      <div className="relative z-10 text-center">
+        <p className="text-2xl mb-8">お問い合わせありがとうございました</p>
+        <button
+          onClick={handleHomeClick}
+          className="bg-[#8d6e63] hover:bg-[#6d4a3d] text-white font-bold py-2 px-4 rounded"
+        >
+          HOME
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default MainComponent;
+
+
+
+
+
