@@ -5,13 +5,39 @@ function RegistrationForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const newErrors = {};
 
-  // ... (残りのコード)
+  // バリデーション
+  if (!name.trim()) newErrors.name = "名前は必須です";
+  if (!email.trim()) newErrors.email = "メールアドレスは必須です";
+  else if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = "有効なメールアドレスを入力してください";
+  if (!password) newErrors.password = "パスワードは必須です";
+  else if (password.length < 6) newErrors.password = "パスワードは6文字以上である必要があります";
 
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+  } else {
+    // フォーム送信処理
+    console.log('フォームが送信されました:', { name, email, password });
+    // ここに実際の送信処理（例：APIリクエスト）を追加します
+    alert('登録が完了しました！');
+    // フォームのリセット
+    setName('');
+    setEmail('');
+    setPassword('');
+    setErrors({});
+  }
+};  // ... (残りのコード)
+const handleSubmit = (e) => {
+  e.preventDefault();
+  // バリデーションロジックをここに追加
+  console.log('Form submitted:', { name, email, password });
+};
   return (
     <div className="flex flex-col min-h-screen bg-[#f2f2f2] font-arial">
-      <form onSubmit={handleSubmit} className="m-auto bg-white p-8 rounded shadow-md">
-        <h2 className="text-2xl font-bold mb-6">登録フォーム</h2>
+      <form onSubmit={handleSubmit} className="m-auto bg-white p-8 rounded shadow-md">        <h2 className="text-2xl font-bold mb-6">登録フォーム</h2>
         <div className="mb-4">
           <label htmlFor="name" className="block mb-2">名前</label>
           <input
@@ -34,7 +60,20 @@ function RegistrationForm() {
           />
           {errors.email && <p className="text-red-500">{errors.email}</p>}
         </div>
-        <div className="mb-6">
+<div className="mb-4">
+  <label htmlFor="password" className="block mb-2">パスワード</label>
+  <input
+    type="password"
+    id="password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    className="w-full p-2 border rounded"
+  />
+  {errors.password && <p className="text-red-500">{errors.password}</p>}
+</div>
+<button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
+  登録
+</button>      
           <label htmlFor="password" className="block mb-2">パスワード</label>
           <input
             type="password"
