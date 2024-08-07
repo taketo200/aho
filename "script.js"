@@ -1,4 +1,3 @@
-
 const { useState } = React;
 
 function RegistrationForm() {
@@ -8,3 +7,12 @@ function RegistrationForm() {
   const [errors, setErrors] = useState({});
 
   // ... (残りのコード)
+
+  return (
+    <div className="flex flex-col min-h-screen bg-[#f2f2f2] font-arial">
+      {/* フォームの内容をここに記述 */}
+    </div>
+  );
+}
+
+ReactDOM.render(<RegistrationForm />, document.getElementById('root'));
