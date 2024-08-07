@@ -1,1 +1,86 @@
 
+const { useState } = React;
+
+function RegistrationForm() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    let newErrors = {};
+    if (!name) newErrors.name = 'お名前を入力してください';
+    if (!email) newErrors.email = 'メールアドレスを入力してください';
+    else if (!isValidEmail(email)) newErrors.email = 'メールアドレスは「ユーザー名@ドメイン」形式で入力してください';
+    if (!password) newErrors.password = 'パスワードを入力してください';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (validateForm()) {
+      console.log('Form submitted successfully');
+      alert('登録が完了しました。ログインページへ遷移します。');
+    }
+  };
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen bg-[#f2f2f2] font-arial">
+      <header className="bg-white p-4 shadow-md">
+        <nav className="container mx-auto flex justify-end">
+          <button className="bg-[#c2b280] text-white px-4 py-2 rounded">login</button>
+        </nav>
+      </header>
+      <main className="flex-grow flex items-center justify-center">
+        <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md w-96">
+          <h2 className="text-2xl mb-6 text-center text-[#c2b280]">FashionablyLate</h2>
+          <h3 className="text-xl mb-6 text-center">Register</h3>
+          <div className="mb-4">
+            <label className="block mb-2">お名前</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="例）山田 太郎"
+              className="w-full p-2 border rounded"
+            />
+            {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2">メールアドレス</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="例）info@example.com"
+              className="w-full p-2 border rounded"
+            />
+            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+          </div>
+          <div className="mb-6">
+            <label className="block mb-2">パスワード</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="例）abcd1234"
+              className="w-full p-2 border rounded"
+            />
+            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+          </div>
+          <button type="submit" className="w-full bg-[#c2b280] text-white p-2 rounded">
+            登録
+          </button>
+        </form>
+      </main>
+    </div>
+  );
+}
+
+ReactDOM.render(<RegistrationForm />, document.getElementById('root'));
